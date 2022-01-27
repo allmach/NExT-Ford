@@ -1,14 +1,15 @@
-from datetime import datetime
 import enum
-from itertools import product
 import os
-from flask import Flask, jsonify, abort, request, url_for
+from datetime import datetime
+
+from flask import Flask, abort, jsonify
+from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
-from flask_restful import Resource, Api
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:@localhost:3306/aula15'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 api = Api(app)
 
@@ -27,7 +28,8 @@ class Product(db.Model, SerializerMixin):
     price = db.Column(db.Float(2), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey(
         'category.id', ondelete="CASCADE"), nullable=False)
-    category = db.relationship('Category', back_populates='products')
+    category = db.relationship(
+        'Category', back_populates='products', lazy=True)
     orders = db.relationship("ProductOrder", backref="products")
 
     def __repr__(self):
@@ -60,7 +62,7 @@ class Order(db.Model, SerializerMixin):
     client_id = db.Column(db.Integer, db.ForeignKey(
         'client.id', ondelete="CASCADE"), nullable=False)
     client = db.relationship(
-        'Client', back_populates=db.backref('order', lazy=True))
+        'Client', back_populates='order')
     products = db.relationship("ProductOrder", backref="orders")
 
     def __repr__(self):
@@ -71,7 +73,8 @@ class Client(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     address = db.Column(db.String(50))
-    telephone = db.Column(db.String(11))
+    telephone_fix = db.Column(db.String(13))
+    telephone_celular = db.Column(db.String(14))
     status = db.Column(db.Enum(StatusChoices))
     credit_limit = db.Column(db.Float(2))
 
@@ -98,39 +101,56 @@ def create_db():
 
 class ProductResource(Resource):
     def get(self):
-        products = Product.query.all() or abort(204)
+        products = Product.query.all() or abort(404, description="Resource not found")
         return jsonify(
             {"products": [product.to_dict() for product in products]}
         )
 
+    def post(self):
+        pass
+
+    def put(self):
+        pass
+
+    def delete(self):
+        pass
+
 
 class ProductItemResource(Resource):
     def get(self, product_id):
-        product = Product.query.filter_by(id=product_id).first() or abort(404)
+        product = Product.query.filter_by(id=product_id).first() or abort(
+            404, description=f"Resource id {product_id} not found")
         return jsonify(product.to_dict())
 
 
+class ClientResource(Resource):
+    def get(self):
+        clients = Client.query.all() or abort(404, description="Resource not found")
+        return jsonify(
+            {"clients": [client.to_dict() for client in clients]}
+        )
+
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', type=ascii,
+                            help='recurso não enviado, prfv mande um nome')
+        args = parser.parse_args()
+
+        client = Client(**args)
+        db.session.add(client)
+        db.session.commit()
+
+        return jsonify({"success": True, "response": "client added"})
+
+    def put(self):
+        pass
+
+    def delete(self):
+        pass
+
+
 api.add_resource(ProductResource, "/product/")
-api.add_resource(ProductItemResource, "/product/<product_id>")
-
-
-def has_no_empty_params(rule):
-    defaults = rule.defaults if rule.defaults is not None else ()
-    arguments = rule.arguments if rule.arguments is not None else ()
-    return len(defaults) >= len(arguments)
-
-
-@app.route("/site-map")
-def site_map():
-    links = []
-    for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
-        if "GET" in rule.methods and has_no_empty_params(rule):
-            url = url_for(rule.endpoint, **(rule.defaults or {}))
-            links.append((url, rule.endpoint))
-    # links is now a list of url, endpoint tuples
-
+api.add_resource(ProductItemResource, "/product/<int:product_id>")
 
 if __name__ == '__main__':
     app.run(debug=True)
