@@ -1,12 +1,12 @@
 from flask import Flask, render_template
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap 
 app = Flask(__name__)
 Bootstrap(app)
 
 @app.route('/')
 def index():
-    return 'qeeafsadf'
-
+    return 'Quinta Etílica'
+ 
 @app.route('/user')
 def user():
     products = ['produto 1', 'produto 2']

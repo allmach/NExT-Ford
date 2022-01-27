@@ -38,8 +38,8 @@ def delete_car(cnx, car):
 
 def search_car(cnx, modelo):
     cursor = cnx.cursor()
-    insert = (f"SELECT * FROM carro WHERE modelo like '{modelo}%'")
-    cursor.execute(insert)
+    search = (f"SELECT * FROM carro WHERE modelo like '{modelo}%'")
+    cursor.execute(search)
     return cursor.fetchone()
 
 def lista_carros(cnx):
