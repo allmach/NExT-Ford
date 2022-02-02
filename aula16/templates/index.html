@@ -1,0 +1,30 @@
+{% extends "template.html" %}
+<!-- criamos um bloco de conteúdo a ser interpretado pelo python -->
+{% block conteudo %}
+<table>
+    <thead>
+        <tr>
+            <th>Plate</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in Product %}
+        <tr>
+            <td>{{ product.plate }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.category }}</td>
+            <td><a class="btn btn-primary" href="/atualizar/{{product}}" role='button'>Atualizar</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a class="btn btn-primary" href="/novo" role='button'>Novo</a>
+{% endblock %}
+© 2022 GitHub, Inc.
+Terms
+Privacy

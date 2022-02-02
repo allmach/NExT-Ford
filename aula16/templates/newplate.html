@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<form action="{{url_for('productresource')}}" method="post">
+    <fieldset>
+        <div class="from-group">
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" class="from-control">
+        </div>
+        <div class="from-group">
+            <label for="price">Preco</label>
+            <input type="text" id="price" name="price" class="from-control">
+        </div>
+        <!-- <div class="from-group">
+            <label for="category_id">Categoria</label>
+            <input type="text" id="category_id" name="category_id" class="from-control">
+        </div> -->
+        <div class="from-group">
+            <select name="category_id" id="category_id">
+                {% for category in categories %}
+                <option value="{{category.id}}">{{category.name}}</option>
+                {%endfor%}
+            </select>    
+            
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastra novo prato</button>
+    </fieldset>
+</form>
+{% endblock %}
