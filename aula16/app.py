@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 
 #CREATE DATABASE 'restaurante'
 
-@app.route('/home')
+@app.route('/')
 def home():
     return render_template('index.html', titulo = 'Restaurante') 
 
@@ -29,6 +29,17 @@ def new():
     if 'user_logon' not in session or session ['user_logon'] == None:
         return redirect(url_for('home', next = url_for('new')))
     return render_template('newplate.html', titulo = 'All Food Restaurant New Order') 
+
+
+@app.route('/createorder', methods=['POST'])
+def create_order():
+    plate = request.form['plate']
+    name = request.form['name']
+    category = request.form['category']
+    price = request.form['price']
+    order = Product(plate, name, category, price)
+    list.append(order)
+    return redirect(url_for('home'))
 
 # class Choices(enum.Enum):
 #     TAKE_AWAY = 'Takeaway'

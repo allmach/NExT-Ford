@@ -72,9 +72,9 @@ def authentication():
             flash(user.name + ' login successful!')
             next_page = request.form['next']
             return redirect(next_page)
-    else:
-        flash('Please, Try again!')
-        return redirect(url_for('login'))
+        else:
+            flash('Please, Try again!')
+            return redirect(url_for('login'))
 
 @app.route('/logout')
 def logout():

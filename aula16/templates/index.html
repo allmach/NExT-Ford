@@ -1,6 +1,12 @@
 {% extends "template.html" %}
-<!-- criamos um bloco de conteúdo a ser interpretado pelo python -->
 {% block conteudo %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All Food Restaurant NExT</title>
+</head>
 <table class="table table-striped table-responsive table-bordered">
     <thead>
         <tr>
@@ -17,14 +23,9 @@
             <td>{{ product.name }}</td>
             <td>{{ product.category }}</td>
             <td>{{ product.price }}</td>
-            <td><a class="btn btn-primary" href="/atualizar/{{product}}" role='button'>Atualizar</a></td>
         </tr>
-        {% endfor %}
+    {% endfor %}
     </tbody>
 </table>
-
 <a class="btn btn-primary" href="/new" role='button'>New</a>
 {% endblock %}
-© 2022 GitHub, Inc.
-Terms
-Privacy
