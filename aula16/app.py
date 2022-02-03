@@ -24,6 +24,12 @@ db = SQLAlchemy(app)
 def home():
     return render_template('index.html', titulo = 'Restaurante') 
 
+@app.route('/new')
+def new():
+    if 'user_logon' not in session or session ['user_logon'] == None:
+        return redirect(url_for('home', next = url_for('new')))
+    return render_template('newplate.html', titulo = 'All Food Restaurant New Order') 
+
 # class Choices(enum.Enum):
 #     TAKE_AWAY = 'Takeaway'
 #     TO_HAVE_HERE = 'Tohavehere'
