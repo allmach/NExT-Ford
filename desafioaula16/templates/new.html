@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+{% block conteudo %}
+    <form action="{{ url_for('new') }}" method="post">
+        <fieldset>
+          <div class="form-group">
+            <label for="plate">Plate</label>
+            <input type="text" id="plate" name="plate" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-control">
+          </div> 
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" name="category" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" id="price" name="price" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
+        </fieldset>
+    </form>
+{% endblock %}

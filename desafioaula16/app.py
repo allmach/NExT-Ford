@@ -18,66 +18,40 @@ api = Api(app)
 
 db = SQLAlchemy(app)
 
-#CREATE DATABASE 'restaurante'
+@app.route('/inicio')
+def inicio():
+    return render_template('lista.html', titulo = 'Restaurante') 
 
-@app.route('/home')
-def home():
-    return render_template('index.html', titulo = 'Restaurante') 
+app.run()
 
-# class Choices(enum.Enum):
-#     TAKE_AWAY = 'Takeaway'
-#     TO_HAVE_HERE = 'Tohavehere'
-
-class Client(db.Model, SerializerMixin):
-    __tablename__ = 'client'
-    serialize_rules = ('product.client.product')
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50),nullable=False)
-    mobile = db.Column(db.String(14))
-    address = db.Column(db.String(50))
-
-    order = db.relationship('ProductOrder', back_populates='client', lazy=True)
-
-    def __repr__(self):
-        return '<Client %r>' % self.name
-
-class Product(db.Model, SerializerMixin):
-    __tablename__ = 'product'
-    plate = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+class Plate(db.Model, SerializerMixin):
+    __tablename__ = 'plate'
+    product = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Float(2), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey(
-        'category.id', ondelete="CASCADE"), nullable=False)
-    category = db.relationship(
-        'Category', back_populates='products', lazy=True)
+    category= db.Column(db.Integer, db.ForeignKey(
+        'category', ondelete="CASCADE"), nullable=False)
+    # category = db.relationship(
+    #     'Category', back_populates='products', lazy=True)
 
     def __repr__(self):
-        return '<Product %r>' % self.name
+        return '<Plate %r>' % self.name
 
 class Category(db.Model, SerializerMixin):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     products = db.relationship(
-        'Product',
+        'Plate',
         back_populates='category',
         cascade='all, delete, delete-orphan',
         single_parent=True,
         lazy=True,
         passive_deletes=True,
-        order_by='desc(Product.name)'
+        order_by='desc(Plate.product)'
     )
 
     def __repr__(self):
         return '<Category %r>' % self.name
-
-
-class ProductOrder(db.Model, SerializerMixin):
-   __tablename__ = 'product_order'
-   product_id = db.Column(db.ForeignKey('product.plate'), primary_key=True)
-   order_id = db.Column(db.ForeignKey('category.id'), primary_key=True)
-   quantity = db.Column(db.Integer, nullable=False)
 
 class Order(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -95,27 +69,26 @@ def create_db():
         os.remove("database.db")
     db.create_all()
 
-@app.route('/product', methods=['GET'])
+@app.route('/new', methods=['GET'])
 def list_prod():
-    data_product = Product.query.all()
+    data_product = Plate.query.all()
     return jsonify(
-        {"product": [data_product_.to_dict() for data_product_ in data_product]}
+        {"plate": [data_product_.to_dict() for data_product_ in data_product]}
     )
 
-@app.route('/product', methods=['POST'])
-def create_prod():
-    data_prod = request.json
+@app.route('/new', methods=['POST'])
+def create_plate():
+    data_plate = request.json
 
-    prod_plate = data_prod['plate']
-    prod_name = data_prod['name']
-    prod_price = data_prod['price']
-    prod_category_id = data_prod['category_id']
+    prod_plate = data_plate['plate']
+    prod_price = data_plate['price']
+    prod_category_id = data_plate['category_id']
 
-    product = Product(plate=prod_plate, name=prod_name, price=prod_price, category_id=prod_category_id)
+    product = Plate(plate=prod_plate, price=prod_price, category_id=prod_category_id)
     db.session.add(product)
     db.session.commit()
 
-    return jsonify({"success": True, "response": "Product added"})
+    return jsonify({"success": True, "response": "Plate added"})
 
 @app.route('/category', methods=['GET'])
 def list_category():
@@ -130,8 +103,7 @@ def create_cat():
     db.session.add(Category(name=data_categ['name']))
     db.session.commit()
 
-    return jsonify({"success": True, "response": "Product added"})
-
+    return jsonify({"success": True, "response": "Plate added"})
 
 class CategoryResource(Resource):
     def get(self):
@@ -150,9 +122,9 @@ class CategoryResource(Resource):
 
         return jsonify({"success": True, "response": "Category added"})
 
-class ProductResource(Resource):
+class PlateResource(Resource):
     def get(self):
-        products = Product.query.all() or abort(404, description="Resource not found")
+        products = Plate.query.all() or abort(404, description="Resource not found")
         return jsonify(
             {"products": [product.to_dict() for product in products]}
         )
@@ -165,7 +137,7 @@ class ProductResource(Resource):
 
         args = parser.parse_args()
 
-        plate = Product(**args)
+        plate = Plate(**args)
         db.session.add(plate)
         db.session.commit()
 
@@ -178,35 +150,17 @@ class ProductResource(Resource):
     def delete(self):
         pass
 
-class OrderResource(Resource):
-    def get(self):
-        orders = Order.query.all() or abort(404, description="Resource not found")
-        return jsonify(
-            {"Order": [order.to_dict() for order in orders]}
-        )
 
-class ProductOrderResource(Resource):
+class OrderResource(Resource):
     def get(self, product_id):
-        product = Product.query.filter_by(id=product_id).first() or abort(
+        product = Order.query.filter_by(id=product_id).first() or abort(
             404, description=f"Resource id {product_id} not found")
         return jsonify(product.to_dict())
 
-
-# api.add_resource(ProductResource, "/product/")
-# api.add_resource(ProductItemResource, "/product/<int:product_id>")
 api.add_resource(CategoryResource,"/Category")
-api.add_resource(ProductResource,"/Product")
+api.add_resource(PlateResource,"/Plate")
 api.add_resource(OrderResource,"/Order")
-api.add_resource(ProductOrderResource,"/product/<int:product_id>")
-
-
-@app.route('/cadastra')
-def registerplate():
-    categories = Category.query.all() or abort(404, description="Resource not found")
-    return render_template("newplate.html",categories=categories)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 
