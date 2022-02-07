@@ -22,9 +22,8 @@
         <h1>Login here</h1>
         <form method="POST" action="{{url_for('authentication')}}">
             <input type="hidden" name="next" value="{{ next or url_for('home')}}">
-            <p><label>User Name:</label> <input class="form-control" type="text" name="user" required></p>
+            <p><label>User Name:</label> <input class="form-control" type="user" name="user" required></p>
             <p><label>Password:</label> <input class="form-control" type="password" name="password" required></p>
-            <p><button class="btn btn-primary" type="submit">Entrar</button></p>
             <p><button class="btn btn-primary" type="submit">Login</button></p> <p><button class="btn btn-primary" type="signup">Sign up</button></p>
         </form>
     </div>
