@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -20,12 +19,12 @@
 
         <h1>All Food Restaurant NExT </h1>
         <h1>Login here</h1>
-        <form method="POST" action="{{url_for('authentication')}}">
-            <input type="hidden" name="next" value="{{ next or url_for('home')}}">
+        <form method="POST" action="{{url_for('authentications')}}">
+            <input type="hidden" name="next1" value="{{ next1 or url_for('home')}}">
             <p><label>User Name:</label> <input class="form-control" type="text" name="user" required></p>
-            <p><label>Password:</label> <input class="form-control" type="password" name="password" required></p>
-            <p><button class="btn btn-primary" type="submit">Entrar</button></p>
-            <p><button class="btn btn-primary" type="submit">Login</button></p> <p><button class="btn btn-primary" type="signup">Sign up</button></p>
+            <p><label>New Password:</label> <input class="form-control" type="password" name="password" required></p>
+            <p><label>Email:</label> <input class="form-control" type="email" name="email" required></p>
+            <p><button class="btn btn-primary" type="submit">Sign up</button></p> 
         </form>
     </div>
 </nav>
