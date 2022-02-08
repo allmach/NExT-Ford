@@ -4,11 +4,11 @@ conn = MySQLdb.connect(user='root', passwd='admin', host='127.0.0.1', port=3306)
 
 
 # Descomente se quiser desfazer o banco...
-conn.cursor().execute("DROP DATABASE `app`;")
+conn.cursor().execute("DROP DATABASE `models`;")
 conn.commit()
 
 criar_tabelas = '''SET NAMES utf8;
-    CREATE DATABASE `app` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+    CREATE DATABASE `models` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
     USE `restaurant`;
     CREATE TABLE `restaurant` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,27 +29,27 @@ conn.cursor().execute(criar_tabelas)
 # inserindo usuarios
 cursor = conn.cursor()
 cursor.executemany(
-      'INSERT INTO app.user (id, name, password) VALUES (%s, %s, %s)',
+      'INSERT INTO user (id, name, password) VALUES (%s, %s, %s)',
       [
             ('allan', 'Allan Machado', '1234'),
             ('lorena', 'Lorena Machado', '5678'),
       ])
 
-cursor.execute('select * from app.user')
+cursor.execute('select * from user')
 print(' -------------  Users:  -------------')
 for user in cursor.fetchall():
     print(user[1])
 
 # inserindo prato, categoria e preços
 cursor.executemany(
-      'INSERT INTO app.restaurant (plate, category, price) VALUES (%s, %s, %s)',
+      'INSERT INTO restaurant (plate, category, price) VALUES (%s, %s, %s)',
       [
             ('Moqueca de Camarao', 'Frutos do Mar', '150,00'),
             ('Moqueca de Peixe', 'Frutos do Mar', '120,00'),
             ('Lasanha', 'Massas', '95,00'),
       ])
 
-cursor.execute('select * from app.restaurant')
+cursor.execute('select * from restaurant')
 print(' -------------  Restaurants:  -------------')
 for restaurant in cursor.fetchall():
     print(restaurant[1])

@@ -5,7 +5,7 @@ from models import Restaurant, User
 SQL_DELETE_RESTAURANT = 'delete from restaurant where id = %s'
 SQL_RESTAURANT_PER_ID = 'SELECT id, plate, category, price from restaurant where id = %s'
 SQL_USER_PER_ID = 'SELECT id, name, password from user where id = %s'
-SQL_UPDATE_RESTAURANT = 'UPDATE restaurant SET name=%s, category=%s, price=%s where id = %s'
+SQL_UPDATE_RESTAURANT = 'UPDATE restaurant SET plate=%s, category=%s, price=%s where id = %s'
 SQL_SEARCH_RESTAURANT = 'SELECT id, plate, category, price from restaurant'
 SQL_CREATE_RESTAURANT = 'INSERT into restaurant (plate, category, price) values (%s, %s, %s)'
 
@@ -20,22 +20,22 @@ class RestaurantDao:
         if (restaurant.id):
             cursor.execute(SQL_UPDATE_RESTAURANT, (restaurant.plate, restaurant.category, restaurant.price, restaurant.id))
         else:
-            # cursor.execute(SQL_CREATE_RESTAURANT, (restaurant.plate, restaurant.category, restaurant.price))
+            cursor.execute(SQL_CREATE_RESTAURANT, (restaurant.plate, restaurant.category, restaurant.price))
             restaurant.id = cursor.lastrowid
         self.__db.connection.commit()
         return restaurant
 
-    # def list(self):
-    #     cursor = self.__db.connection.cursor()
-    #     cursor.execute(SQL_SEARCH_RESTAURANT)
-    #     restaurant = Restaurant(cursor.fetchall())
-    #     return restaurant
+    def list(self):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_SEARCH_RESTAURANT)
+        restaurants = save_restaurants(cursor.fetchall())
+        return restaurants
 
-    # def busca_por_id(self, id):
-    #     cursor = self.__db.connection.cursor()
-    #     cursor.execute(SQL_RESTAURANT_PER_ID, (id,))
-    #     tupla = cursor.fetchone()
-    #     return Restaurant(tupla[1], tupla[2], tupla[3], id=tupla[0])
+    def search_by_id(self, id):
+        cursor = self.__db.connection.cursor()
+        cursor.execute(SQL_RESTAURANT_PER_ID, (id,))
+        tupla = cursor.fetchone()
+        return Restaurant(tupla[1], tupla[2], tupla[3], id=tupla[0])
 
     def delete(self, id):
         self.__db.connection.cursor().execute(SQL_DELETE_RESTAURANT, (id, ))
@@ -54,10 +54,10 @@ class UserDao:
         return user
 
 
-# def traduz_jogos(restaurant):
-#     def cria_jogo_com_tupla(tupla):
-#         return Restaurant(tupla[1], tupla[2], tupla[3], id=tupla[0])
-#     return list(map(cria_jogo_com_tupla, restaurant))
+def save_restaurants(restaurants):
+    def create_restaurant_com_tupla(tupla):
+        return Restaurant(tupla[1], tupla[2], tupla[3], id=tupla[0])
+    return list(map(create_restaurant_com_tupla, restaurants))
 
 
 def search_user(tupla):

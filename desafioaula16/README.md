@@ -1,8 +1,6 @@
-# Aula 16 - NExT-Ford
+# Desafio Aula 16 - NExT-Ford
 
 ## Desenvolvimento uma API com Flask em Python para um restaurante delivery
-
-### Nesta aula você deverão desenvolver do uma API, que atenda um dono de restaurante que faz entregas de comidas.
 
 ---
 <h3 align="center">
@@ -11,8 +9,8 @@
 <br>
 <p align="center">
 
-  <a href="https://gersonrs.github.io/">
-    <img alt="Made by Gerson" src="https://img.shields.io/badge/made%20by-GersonRS-blueviolet">
+  <a href="https://allmach.github.io/">
+    <img alt="Made by Allan" src="https://img.shields.io/badge/made%20by-GersonRS-blueviolet">
   </a>
 
   <img alt="License" src="https://img.shields.io/github/license/GersonRS/Challenge-React-Native?color=blueviolet&logo=asa&logoColor=blue">
@@ -22,30 +20,11 @@
   </a>
 </p>
 
-<p align="center">
-  <a href="#rocket-sobre-o-desafio">Sobre o desafio</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#template-da-aplicação">Template da aplicação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#configuração-do-projeto">Configuração do Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#funcionalidades-da-api">Funcionalidades da API</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#rocket-expandindo-os-horizontes">Expandindo os horizontes</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-licença">Licença</a>
-</p>
-
 ## :rocket: Sobre o desafio
 
-Nesse desafio, você irá desenvolver uma API REST, que atende a um Restaurante. Agora você irá praticar o que você aprendeu até agora no modulo de Back-End do NExT com Python e Flask, para criar uma pequena API para pedidos de comida.
+Nesse desafio, você irá desenvolver uma API REST, que atende a um Restaurante. Foram aplicados conhecimentos aprenddidos no modulo de Back-End do NExT com Python e Flask, para criar uma pequena API para cadastro de pratos de comida.
 
-Essa será uma API que receberá requisições de um aplicativo movel, e retornará e filtrará os pratos de comida cadastrados na API e permitirá a criação de novos pedidos.
-
-## Template da aplicação
-
-Para te ajudar nesse desafio, criei para você um modelo que você deve utilizar como um template do Github.
-
-O template está disponível na seguinte url: **[Acessar Template](https://github.com/GersonRS/NExT-Ford/blob/main/aula16/app.py)**
-
-**Dica**: Caso não saiba utilizar repositórios do Github como template, tem um guia em **[nosso FAQ](https://github.com/GersonRS/NExT-Ford/blob/main/aula16/README.md).**
-
-Agora navegue até a pasta criada e abra no Visual Studio Code, lembre-se de executar o pip para atualizar todas as dependências.
+Essa API receberá requisições de um aplicativo movel, e retornará os pratos de comida cadastrados na API e permitirá a criação, edição e deleção de novos pedidos.
 
 ## Configuração do Projeto
 

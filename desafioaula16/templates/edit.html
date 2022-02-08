@@ -1,0 +1,34 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All Food Restaurant NExT</title>
+</head>
+<body>
+      <div class="page-header">
+      <form action = "{{url_for('update')}}" method = "post"> 
+        <fieldset>
+            <input type="hidden" name="id" value="{{ order.id }}">
+          <div class="form-group">
+            <label for="plate">Plate</label>
+            <input type="text" id="plate" name="plate" class="form-control" value="{{ order.plate }}">
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" name="category" class="form-control" value="{{ order.category }}">
+          </div>
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" id="price" name="price" class="form-control" value="{{ order.price}}">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+      </fieldset>
+    </form>
+  </div>
+</body>
+</html>
+{% endblock %}

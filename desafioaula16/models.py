@@ -6,8 +6,7 @@ class Restaurant():
         self.price = price
 
 class User():
-    def __init__(self, id, name, password, email):
+    def __init__(self, id, name, password):
         self.id = id
         self.name = name
         self.password = password 
-        self.email = email
