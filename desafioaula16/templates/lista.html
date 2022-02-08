@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>All Food Restaurant NExT</title>
+    <title>All Food Restaurant NExT - Orders</title>
 </head>
 <body>
     <table class="table table-striped table-responsive table-bordered">
@@ -23,9 +23,13 @@
                             <td>{{ order.plate }}</td>
                             <td>{{ order.category }}</td>
                             <td>{{ order.price }}</td>
-                            <td><a class="btn btn-primary" href="{{ url_for('edit', id=order.id) }}" role='button'>Edit</a></td>
+                            <td>
+                                <a class="btn btn-primary" href="{{ url_for('edit', id=order.id) }}" role='button'>Edit</a>
+                                <a class="btn btn-danger" href="{{ url_for('delete', id=order.id) }}" role='button'>Delete</a></td>
                         <tr>
         {% endfor %}
+             </div>
+            </div>
         </tbody>
     </table>
     <a class="btn btn-primary" href="/new" role='button'>New</a>

@@ -9,7 +9,18 @@
 </head>
 <body>
       <div class="page-header">
-      <form action = "{{url_for('create_order')}}" method = "post"> 
+      <form action = "{{url_for('create_order')}}" method = "post" enctype="multipart/form-data"> 
+        <firuge class="thumb col-md-4">
+          <img class="img-responsive" src="{{ url_for('image', file_name='capa_padrao.jpg') }}">
+          <figcaption>
+            <label class="fileContainer">
+              Change Image
+              <input type="file" name="file" accept=".jpg">
+            </label>
+          </figcaption>
+        </firuge>
+
+
         <fieldset>
           <div class="form-group">
             <label for="plate">Plate</label>
@@ -25,6 +36,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+        <a class="btn btn-danger" href="{{ url_for('home') }}">Back</a>
       </fieldset>
     </form>
   </div>
