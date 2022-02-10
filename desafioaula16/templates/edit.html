@@ -10,16 +10,15 @@
 <body>
       <div class="page-header">
       <form action = "{{url_for('update')}}" method = "post" enctype="multipart/form-data"> 
-        <firuge class="thumb col-md-4">
+        <figure class="thumb col-md-4">
           <img class="img-responsive" src="{{ url_for('image', file_name=front_image) }}">
           <figcaption>
-            <label class="fileContainer"></label>
-            Change Image 
-            <label>
+            <label class="fileContainer">
+              Change Image 
               <input type="file" name="file" accept=".jpg">
             </label>
           </figcaption>
-        </firuge>
+        </figure>
 
         <fieldset>
             <input type="hidden" name="id" value="{{ order.id }}">
